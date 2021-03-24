@@ -1,0 +1,17 @@
+
+- nic o "funkcjonalności sieciowej" - nie przewidują Panowie?
+
+- punktacja: chyba ok, chociaż nie wiem, czy zrozumiałem... ;-)
+
+- elementy dodatkowe: "...czy inne takie" - to ma być PLAN (projekt), więc nie "inne takie" tylko KONKRETNIE!!!
+
+- zasady gry: "..dokładne wartości do ustalenia" - przypominam, że "definicja" planszy ma być odczytywana z pliku
+konfiguracyjnego, co obejmuje m.in. liczbę piłek, miejsce ich pojawienia się, ich prędkość początkową i kierunek ruchu, 
+czas potrzebny do przejścia na kolejny etap czy do pojawienia się kolejnej piłki, itp., itd. 
+Więc te "ustalenia" mają być po prostu wczytywane z pliku konfiguracyjnego opisującego dany poziom.
+Analogicznie - punkty za poszczególne "osiągnięcia" powinny być zapisane w pliku konfiguracyjnym 
+(może to być 'globalny' plik konf. jeśli wartości te są identyczne dla wszystkich plansz, lub plik definiujący
+planszę, jeśli wartości te mają być zróżnicowane); może to być jakaś 'formuła' (jej współczynniki).
+No i elementy dodatkowe też :-)
+
+Etap zaliczony.
