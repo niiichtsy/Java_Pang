@@ -5,13 +5,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
-public class FileParsing {
+public class FileParser {
+  public static int noOfBalls; /*zmienna określająca liczbę piłek*/
+  public static float yvelocity; /*zmienna określająca maksymalną prędkość wertykalną piłek*/
+  public static float xvelocity; /*zmienna określająca maksymalną prędkość horyzontalną piłek*/
   
-
-  
-  public static void main(String[] args) {
+  public static void main(String[] args){
     List<Float> parseList = new ArrayList<Float>(); 
-    int noOfBalls = 0;
     try {
       File config = new File("config.txt");
       Scanner parser = new Scanner(config);
@@ -24,19 +24,17 @@ public class FileParsing {
       System.out.println("An error occurred.");
       e.printStackTrace();
     }
-    float g = parseList.get(0); /*zmienna określająca stałą grawitacji poziomu */
-    float[] xpositions = new float[noOfBalls]; /*tablica pozycji x piłek*/
-    float[] ypositions = new float[noOfBalls]; /*tablica pozycji y piłek*/
+    yvelocity = parseList.get(0); 
+    xvelocity = parseList.get(1); 
+    float[] xpositions = new float[noOfBalls];    /*tablica pozycji x piłek*/
+    float[] ypositions = new float[noOfBalls];    /*tablica pozycji y piłek*/
     for (int i=0; i<noOfBalls; i++)
     {
-      int x = 1+i;
-      int y = 1+i+noOfBalls;   
+      int x = 2+i;
+      int y = 2+i+noOfBalls;   
       xpositions[i] = parseList.get(x);
       ypositions[i] = parseList.get(y);
     }
-    System.out.println(ypositions[0]);
-
-
-    
+  }
 }
-}
+
