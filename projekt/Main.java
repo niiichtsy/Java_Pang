@@ -8,5 +8,7 @@ public class Main {
         System.out.println("heyyyyy");
         FileParser.configParse();
         FileParser.levelParse(1);
+        MainMenu mainMenu = new MainMenu();
+        mainMenu.displayMenu();
     }
 }
