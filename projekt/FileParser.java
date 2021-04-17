@@ -1,16 +1,18 @@
+package Projekt.proze21l_bojke_sulkowski.projekt;
+
 import java.io.File; 
 import java.io.FileNotFoundException;  
 import java.util.Scanner; 
-import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 
-public class FileParser {
-  public static int noOfBalls; /*zmienna określająca liczbę piłek*/
-  public static float yvelocity; /*zmienna określająca maksymalną prędkość wertykalną piłek*/
-  public static float xvelocity; /*zmienna określająca maksymalną prędkość horyzontalną piłek*/
+
+class FileParser {
+  static int noOfBalls; /*zmienna określająca liczbę piłek*/
+  static float yvelocity; /*zmienna określająca maksymalną prędkość wertykalną piłek*/
+  static float xvelocity; /*zmienna określająca maksymalną prędkość horyzontalną piłek*/
   
-  public static void main(String[] args){
+  static void parse(){
     List<Float> parseList = new ArrayList<Float>(); 
     try {
       File config = new File("config.txt");
