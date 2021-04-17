@@ -1,1 +1,1 @@
-javac projekt\*.java
+java projekt/Main

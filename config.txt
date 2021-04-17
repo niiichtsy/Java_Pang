@@ -1,0 +1,3 @@
+noOfLevels=5
+noOfLives=3
+

@@ -1,42 +1,36 @@
-package Projekt.proze21l_bojke_sulkowski.projekt;
+package projekt;
 
-import java.io.File; 
-import java.io.FileNotFoundException;  
-import java.util.Scanner; 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Properties;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 
 class FileParser {
   static int noOfBalls; /*zmienna określająca liczbę piłek*/
+  static int noOfLevels; /*zmienna określająca liczbę poziomów*/
+  static int noOfLives; /*zmienna określająca liczbę żyć*/
   static float yvelocity; /*zmienna określająca maksymalną prędkość wertykalną piłek*/
   static float xvelocity; /*zmienna określająca maksymalną prędkość horyzontalną piłek*/
   
-  static void parse(){
-    List<Float> parseList = new ArrayList<Float>(); 
-    try {
-      File config = new File("config.txt");
-      Scanner parser = new Scanner(config);
-      noOfBalls = Integer.parseInt(parser.nextLine());
-      while (parser.hasNextLine()) {
-        parseList.add(Float.parseFloat(parser.nextLine()));
-      }
-      parser.close();
-    } catch (FileNotFoundException e) {
-      System.out.println("An error occurred.");
-      e.printStackTrace();
-    }
-    yvelocity = parseList.get(0); 
-    xvelocity = parseList.get(1); 
-    float[] xpositions = new float[noOfBalls];    /*tablica pozycji x piłek*/
-    float[] ypositions = new float[noOfBalls];    /*tablica pozycji y piłek*/
-    for (int i=0; i<noOfBalls; i++)
-    {
-      int x = 2+i;
-      int y = 2+i+noOfBalls;   
-      xpositions[i] = parseList.get(x);
-      ypositions[i] = parseList.get(y);
-    }
+  static void configParse() throws IOException {
+        InputStream propertiesFile = new FileInputStream("config.txt");
+        Properties properties = new Properties();
+        properties.load(propertiesFile);
+        noOfLevels = Integer.parseInt(properties.getProperty("noOfLevels"));
+        noOfLives = Integer.parseInt(properties.getProperty("noOfLives"));
+        System.out.println("Configs parsed. Number of levels: " + noOfLevels + "\nNumber of lives: " + noOfLives);
+        propertiesFile.close();
+  }
+
+  static void levelParse(int levelNumber) throws IOException {
+    InputStream propertiesFile = new FileInputStream(levelNumber + "level.txt");
+    Properties properties = new Properties();
+    properties.load(propertiesFile);
+    noOfBalls = Integer.parseInt(properties.getProperty("noOfBalls"));
+    System.out.println("Number of balls in the " + levelNumber + "st level: "+noOfBalls);
+    propertiesFile.close();
+
   }
 }
 

@@ -1,11 +1,12 @@
-package Projekt.proze21l_bojke_sulkowski.projekt;
+package projekt;
+
+import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args)
+    public static void main(String[] args) throws IOException
     {
         System.out.println("heyyyyy");
-        FileParser.parse();
-        
+        FileParser.configParse();
+        FileParser.levelParse(1);
     }
-    
 }
