@@ -8,15 +8,13 @@ public class Painter extends Canvas {
         
         
 
-    void drawLevel(Graphics g){
+    public void paint(Graphics g){
+
+        setBackground(Color.gray);
         g.clearRect(0, 0, getWidth(), getHeight());
-        
-        Graphics2D painter = (Graphics2D) g;
 
-        Rectangle2D player = new Rectangle2D.Float(50, 50, 100, 200);
-
-        painter.setColor(Color.blue);
-        painter.fill(player);
+        g.setColor(Color.blue);
+        g.fillRect(50, 50, 100, 200);
 
     }
 
