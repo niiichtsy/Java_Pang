@@ -5,10 +5,7 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException
     {
-        System.out.println("heyyyyy");
-        FileParser.configParse();
-        FileParser.levelParse(1);
-        MainMenu mainMenu = new MainMenu();
-        mainMenu.displayMenu();
+        Menu menu = new Menu();
+        menu.displayMainMenu();
     }
 }
