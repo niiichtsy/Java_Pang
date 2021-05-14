@@ -46,10 +46,10 @@ class Menu extends Frame {
         FileParser.configParse();
         FileParser.levelParse(1);
         
-
+	Figure figure = new Figure();
         Painter painter = new Painter();
         painter.setSize(1000,500);
-        add(painter);
+        add(painter);                                 // bez tego dziala(ledwo)
         pack();
         setVisible(true);
         this.addWindowListener(new WindowAdapter() {
@@ -58,5 +58,6 @@ class Menu extends Frame {
                 }
             }
         );
+	add(figure);
     }
 }
