@@ -10,7 +10,7 @@ import java.awt.geom.*;
  */
 public class Painter extends Panel implements ActionListener, KeyListener
 {
-	Timer t = new Timer(1,this);
+	Timer t = new Timer(5,this);
 	int playerWidth=50;
 	int playerHeight=50;
 	int x0=475;
@@ -97,23 +97,24 @@ public class Painter extends Panel implements ActionListener, KeyListener
 	public void keyPressed(KeyEvent e)
 	{
 		int code = e.getKeyCode();
-		if(code == KeyEvent.VK_UP)
-	{
-		up();
-	}
-		else stop();
-
-		if(code == KeyEvent.VK_DOWN)
+		switch(code)
 		{
-			down();
-		}
-		if(code == KeyEvent.VK_RIGHT)
-		{
-			right();
-		}
-		if(code == KeyEvent.VK_LEFT)
-		{	
-			left();
+		case(KeyEvent.VK_UP):
+			if(y0>0) {up();}
+			else {stop();}
+			break;
+		case(KeyEvent.VK_DOWN):
+			if(y0<getHeight()-playerHeight-1) {down();}
+			else {stop();}
+			break;
+		case(KeyEvent.VK_RIGHT):
+			if(x0<getWidth()-playerWidth-1) {right();}
+			else {stop();}
+			break;	
+		case(KeyEvent.VK_LEFT):
+			if(x0>0) {left();}
+			else {stop();}
+			break;
 		}
 			
 	}
