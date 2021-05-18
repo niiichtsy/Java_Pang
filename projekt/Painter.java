@@ -18,6 +18,11 @@ public class Painter extends Panel implements ActionListener, KeyListener
 	int playerVel=2;
 	int playerVelx=0;
 	int playerVely=0;
+	int ballVelx=3;
+	int ballVely=3;
+	int ballX=FileParser.xStart;
+	int ballY=FileParser.yStart;
+	int radius=100;
 
 	public Painter()
 	{
@@ -50,7 +55,7 @@ public class Painter extends Panel implements ActionListener, KeyListener
 	{
 		g.setColor(Color.red);
 		Graphics2D g2 = (Graphics2D) g;
-		g2.fill(new Ellipse2D.Double(FileParser.xStart,FileParser.yStart,100,100));
+		g2.fill(new Ellipse2D.Double(ballX,ballY,radius,radius));
 
 	}
 	
@@ -59,6 +64,16 @@ public class Painter extends Panel implements ActionListener, KeyListener
 		repaint();
 		x0 += playerVelx;
 		y0 += playerVely;
+		if(ballX < 0 || ballX > getWidth()-radius-1)
+		{	
+			ballVelx = -ballVelx;
+		}
+		if(ballY < 0 || ballY > getHeight()-radius-1)
+		{
+			ballVely = -ballVely;
+		}
+		ballX += ballVelx;
+		ballY += ballVely;
 	}
 
 	public void up()
