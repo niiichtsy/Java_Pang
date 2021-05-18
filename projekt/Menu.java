@@ -3,7 +3,9 @@ package projekt;
 import java.awt.*; 
 import java.awt.event.*;
 import java.io.IOException;
-
+/**
+ * Klasa odpowiadająca za obsługę okna gry. 
+ */
 class Menu extends Frame {
 
 
@@ -46,10 +48,11 @@ class Menu extends Frame {
         FileParser.configParse();
         FileParser.levelParse(1);
         
-	Figure figure = new Figure();
-        Painter painter = new Painter();
+	    Painter painter = new Painter();
+          
         painter.setSize(1000,500);
-        add(painter);                                 // bez tego dziala(ledwo)
+        add(painter);
+                            
         pack();
         setVisible(true);
         this.addWindowListener(new WindowAdapter() {
@@ -58,6 +61,6 @@ class Menu extends Frame {
                 }
             }
         );
-	add(figure);
+	   
     }
 }
