@@ -1,0 +1,10 @@
+(S: sendLevel-1 => C)
+Server respond: noOfBalls=1 xStart1=2 yStart1=5 xVelocity1=6 yVelocity1=2\n
+
+choć to jest OCZYWISTE, to jednak należałoby opisać znaczenie poszczególnych parametrów i typ danych... (przynajmniej nazwy parametrów są typu samoopisujące ;-))
+Tak na przykład: przedstawiony przykład sugeruje liczby całkowite, ale może mogą to być liczby rzeczywiste???
+
+"Przesyłane parametry są oznaczone tak jak w programie"
+No właśnie... a protokół jest SAMODZIELNYM, NIEALEŻNYM bytem, z którgo mogą korzystać dowolni programiści tworząc własne programy, nieznający Waszego programu ;-)
+
+Etap zaliczony (ale uzupełnić wspomniane "braki" w wersji końcowej)
