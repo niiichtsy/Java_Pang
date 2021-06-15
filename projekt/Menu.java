@@ -1,25 +1,25 @@
 package projekt;
 
-import java.awt.*; 
+import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+
 /**
- * Klasa odpowiadająca za obsługę okna gry. 
+ * Klasa odpowiadająca za obsługę okna gry.
  */
 class Menu extends Frame {
 
+    void displayMainMenu() {
 
-    void displayMainMenu(){
-
-        Button startGame=new Button("Start Game");  
-        Button options=new Button("Options");
+        Button startGame = new Button("Start Game");
+        Button options = new Button("Options");
 
         add(startGame, BorderLayout.CENTER);
         add(options, BorderLayout.NORTH);
 
-        setSize(500,500);  
+        setSize(500, 500);
         setVisible(true);
-        
+
         startGame.addActionListener(event -> {
             try {
                 dispose();
@@ -32,10 +32,8 @@ class Menu extends Frame {
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
                 dispose();
-                }
             }
-        );
-
+        });
 
     }
 
@@ -43,24 +41,22 @@ class Menu extends Frame {
 
         removeAll();
         repaint();
-        
 
         FileParser.configParse();
         FileParser.levelParse(1);
-        
-	    Painter painter = new Painter();
-          
-        painter.setSize(1000,500);
+
+        Painter painter = new Painter();
+
+        painter.setSize(1000, 500);
         add(painter);
-                            
+
         pack();
         setVisible(true);
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
                 dispose();
-                }
             }
-        );
-	   
+        });
+
     }
 }

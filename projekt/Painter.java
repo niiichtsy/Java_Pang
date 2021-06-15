@@ -4,139 +4,142 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+import java.io.File;
 
 /**
- * klasa odpowiadająca za rysowanie obiektów oraz obsługę zdarzeń ich dotyczących.
+ * klasa odpowiadająca za rysowanie obiektów oraz obsługę zdarzeń ich
+ * dotyczących.
  */
-public class Painter extends Panel implements ActionListener, KeyListener
-{
-	Timer t = new Timer(5,this);
-	int playerWidth=50;
-	int playerHeight=50;
-	int x0=475;
-	int y0=450;
-	int playerVel=2;
-	int playerVelx=0;
-	int playerVely=0;
-	int ballVelx=3;
-	int ballVely=3;
-	int ballX=FileParser.xStart;
-	int ballY=FileParser.yStart;
-	int radius=100;
+public class Painter extends Panel implements ActionListener, KeyListener {
+	Timer t = new Timer(5, this);
+	int playerWidth = 50;
+	int playerHeight = 50;
+	int x0 = 475;
+	int y0 = 450;
+	int playerVel = 2;
+	int playerVelx = 0;
+	int playerVely = 0;
+	int radius = 100;
 
-	public Painter()
-	{
+	public Painter() {
 		setBackground(Color.gray);
 
-		setPreferredSize(new Dimension(1000,500));
+		setPreferredSize(new Dimension(1000, 500));
 		t.start();
 		addKeyListener(this);
 		setFocusable(true);
 		setFocusTraversalKeysEnabled(false);
 	}
 
-	public void paint(Graphics g)
-	{
+	public void paint(Graphics g) {
 		super.paint(g);
 		g.clearRect(0, 0, getWidth(), getHeight());
 		drawPlayer(g);
 		drawBalls(g);
 	}
 
-	public void drawPlayer(Graphics g)
-	{
+	public void drawPlayer(Graphics g) {
 		g.setColor(Color.blue);
 		Graphics2D g2 = (Graphics2D) g;
-		g2.fill(new Rectangle2D.Double(x0,y0,playerWidth,playerHeight));
+		g2.fill(new Rectangle2D.Double(x0, y0, playerWidth, playerHeight));
 
 	}
 
-	public void drawBalls(Graphics g)
-	{
+	public void drawBalls(Graphics g) {
 		g.setColor(Color.red);
 		Graphics2D g2 = (Graphics2D) g;
-		g2.fill(new Ellipse2D.Double(ballX,ballY,radius,radius));
+		for (int i=0; i<FileParser.noOfBalls; i++)
+		{
+			g2.fill(new Ellipse2D.Double(FileParser.xStart[i], FileParser.yStart[i], radius, radius));
+		}
+		
 
 	}
-	
-	public 	void actionPerformed(ActionEvent evt)
-	{
+
+	public void actionPerformed(ActionEvent evt) {
 		repaint();
 		x0 += playerVelx;
 		y0 += playerVely;
-		if(ballX < 0 || ballX > getWidth()-radius-1)
-		{	
-			ballVelx = -ballVelx;
-		}
-		if(ballY < 0 || ballY > getHeight()-radius-1)
+		for (int i=0; i < FileParser.noOfBalls; i++)
 		{
-			ballVely = -ballVely;
+		if (FileParser.xStart[i] < 0 || FileParser.xStart[i]> getWidth() - radius - 1) {
+			FileParser.xVelocity[i] = -FileParser.xVelocity[i];
 		}
-		ballX += ballVelx;
-		ballY += ballVely;
+		if (FileParser.yStart[i] < 0 || FileParser.yStart[i] > getHeight() - radius - 1) {
+			FileParser.yVelocity[i] = -FileParser.yVelocity[i];
+		}
+		FileParser.xStart[i]+= FileParser.xVelocity[i];
+		FileParser.yStart[i] += FileParser.yVelocity[i];
+		}
 	}
 
-	public void up()
-	{
-	
+	public void up() {
+
 		playerVelx = 0;
 		playerVely = -playerVel;
 	}
-	
-	public void down()
-	{
-		
-		
+
+	public void down() {
+
 		playerVelx = 0;
 		playerVely = playerVel;
-		
+
 	}
 
-	public void left()
-	{
+	public void left() {
 		playerVelx = -playerVel;
 		playerVely = 0;
 	}
 
-	public void right()
-	{
+	public void right() {
 		playerVelx = playerVel;
 		playerVely = 0;
 	}
 
-	public void stop()
-	{
+	public void stop() {
 		playerVelx = 0;
 		playerVely = 0;
 	}
-	public void keyPressed(KeyEvent e)
-	{
+
+	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
-		switch(code)
-		{
-		case(KeyEvent.VK_UP):
-			if(y0>0) {up();}
-			else {stop();}
-			break;
-		case(KeyEvent.VK_DOWN):
-			if(y0<getHeight()-playerHeight-1) {down();}
-			else {stop();}
-			break;
-		case(KeyEvent.VK_RIGHT):
-			if(x0<getWidth()-playerWidth-1) {right();}
-			else {stop();}
-			break;	
-		case(KeyEvent.VK_LEFT):
-			if(x0>0) {left();}
-			else {stop();}
-			break;
+		switch (code) {
+			case (KeyEvent.VK_UP):
+				if (y0 > 0) {
+					up();
+				} else {
+					stop();
+				}
+				break;
+			case (KeyEvent.VK_DOWN):
+				if (y0 < getHeight() - playerHeight - 1) {
+					down();
+				} else {
+					stop();
+				}
+				break;
+			case (KeyEvent.VK_RIGHT):
+				if (x0 < getWidth() - playerWidth - 1) {
+					right();
+				} else {
+					stop();
+				}
+				break;
+			case (KeyEvent.VK_LEFT):
+				if (x0 > 0) {
+					left();
+				} else {
+					stop();
+				}
+				break;
 		}
-			
+
 	}
-	
-	public void keyTyped(KeyEvent e) {}
-	public void keyReleased(KeyEvent e) 
-	{
+
+	public void keyTyped(KeyEvent e) {
+	}
+
+	public void keyReleased(KeyEvent e) {
 		stop();
 	}
 

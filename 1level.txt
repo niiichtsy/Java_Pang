@@ -1,5 +1,9 @@
-noOfBalls=1
-xVelocity=4
-yVelocity=2
-xStart=1
-yStart=1
+noOfBalls=2
+xVelocity1=4
+yVelocity1=2
+xVelocity2=5
+yVelocity2=1
+xStart1=1
+yStart1=1
+xStart2=300
+yStart2=20
