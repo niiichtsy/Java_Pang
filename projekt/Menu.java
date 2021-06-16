@@ -38,7 +38,7 @@ class Menu extends Frame {
     }
 
     void displayGame() throws IOException {
-
+    
         removeAll();
         repaint();
 
@@ -55,6 +55,7 @@ class Menu extends Frame {
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
                 dispose();
+                System.exit(0);
             }
         });
 
