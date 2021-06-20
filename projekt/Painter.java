@@ -11,6 +11,7 @@ import java.util.ArrayList;
  * dotyczących (na przykład kolizji).
  */
 public class Painter extends Panel implements ActionListener, KeyListener {
+	static int score = 0;
 	Timer t = new Timer(5, this);
 	int playerWidth = 50;
 	int playerHeight = 50;
@@ -90,6 +91,7 @@ public class Painter extends Panel implements ActionListener, KeyListener {
 		FileParser.xStart[i]+= FileParser.xVelocity[i];
 		FileParser.yStart[i] += FileParser.yVelocity[i];
 	 	}
+		countScore();
 	}
 
 	public void up() {
@@ -160,5 +162,9 @@ public class Painter extends Panel implements ActionListener, KeyListener {
 
 	public void keyReleased(KeyEvent e) {
 		stop();
+	}
+
+	public void countScore() {
+		score++;
 	}
 }
