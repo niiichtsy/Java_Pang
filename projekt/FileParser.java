@@ -4,6 +4,9 @@ import java.util.Properties;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 
 /**
  * Klasa odpowiadająca za parsowanie plików konfiguracyjnych oraz poziomów.
@@ -49,4 +52,12 @@ public class FileParser {
     propertiesFile.close();
 
   }
+
+  /*static void scoreSave() {
+    FileOutputStream outFile = new FileOutputStream("highScore.txt");
+      PrintStream out = new PrintStream(outFile);
+      out.print("LOL");
+  }*/
+
+  
 }

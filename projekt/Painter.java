@@ -12,16 +12,16 @@ import java.io.IOException;
  * Klasa odpowiadająca za rysowanie obiektów oraz obsługę zdarzeń ich
  * dotyczących (na przykład kolizji).
  */
-public class Painter extends Panel implements ActionListener {
+public class Painter extends JPanel implements ActionListener {
 	Label scoreLabel = new Label("Score:");
-	Label pauseLabel = new Label("RUNNING - PRESS SPACE TO PAUSE");
+	Label pauseLabel = new Label("PAUSED - PRESS SPACE TO UNPAUSE");
 	Timer t = new Timer(5, this);
 	int[] startingPosx = java.util.Arrays.copyOf(FileParser.xStart, FileParser.xStart.length);
 	int[] startingPosy = java.util.Arrays.copyOf(FileParser.yStart, FileParser.yStart.length);
 	int[] xVelocity = java.util.Arrays.copyOf(FileParser.xVelocity, FileParser.xVelocity.length);
 	int[] yVelocity = java.util.Arrays.copyOf(FileParser.yVelocity, FileParser.yVelocity.length);
 	int lives = FileParser.noOfLives;
-	int score = 0;
+	static int score = 0;
 	int playerWidth = 50;
 	int playerHeight = 50;
 	int x0 = 475;
@@ -30,12 +30,11 @@ public class Painter extends Panel implements ActionListener {
 	int playerVelx = 0;
 	int playerVely = 0;
 	int radius = 100;
-	int pauseIndex = 0;
+	int pauseIndex = 1;
 	ArrayList<Ellipse2D> balls = new ArrayList<Ellipse2D>();
 	Rectangle2D player;
 
 	public Painter() {
-		setBackground(Color.gray);
 		setPreferredSize(new Dimension(1000, 500));
 
 		addTopMenu();
@@ -45,14 +44,23 @@ public class Painter extends Panel implements ActionListener {
 		addKeyListener(controller);
 		setFocusable(true);
 		setFocusTraversalKeysEnabled(false);
+		
 	}
 
-	public void paint(Graphics g) {
-		super.paint(g);
+	public void paintComponent(Graphics g) {
+		if (score < 500) 
+		{
+		super.paintComponent(g);
 		g.clearRect(0, 0, getWidth(), getHeight());
 		drawPlayer(g);
 		drawBalls(g);
-
+		}
+		else
+		{
+			pauseIndex = 1;
+			JOptionPane.showMessageDialog(this, "Level cleared!"); 
+			
+		}	
 	}
 
 	public void addTopMenu() {
@@ -68,6 +76,7 @@ public class Painter extends Panel implements ActionListener {
 		for (int i = 0; i < FileParser.noOfBalls; i++) {
 			balls.add(new Ellipse2D.Double(startingPosx[i], startingPosy[i], radius, radius));
 		}
+		
 		player = new Rectangle2D.Double(x0, y0, playerWidth, playerHeight);
 	}
 
@@ -88,11 +97,10 @@ public class Painter extends Panel implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent evt) {
-		repaint();
-		addEntities();
-		
 		if (pauseIndex !=1)
 		{
+		repaint();
+		addEntities();
 		x0 += playerVelx;
 		y0 += playerVely;
 		for (int i = 0; i < FileParser.noOfBalls; i++) {
@@ -126,10 +134,16 @@ public class Painter extends Panel implements ActionListener {
 		startingPosy = java.util.Arrays.copyOf(FileParser.yStart, FileParser.yStart.length);
 		playerVelx = 0;
 		playerVely = 0;
+		x0 = 475;
+		y0 = 450; 
 	}
 
 	public void updateScore() {
 		score++;
 		scoreLabel.setText("Score:  " + score + "  ");
+	}
+
+	static int getScore() {
+		return score;
 	}
 }

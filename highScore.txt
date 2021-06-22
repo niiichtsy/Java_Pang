@@ -1,0 +1,4 @@
+Michał = 6000
+Daniel = 3400
+Jan = 2300
+Ktoś = 2000
