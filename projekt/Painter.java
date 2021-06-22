@@ -11,8 +11,9 @@ import java.util.ArrayList;
  * dotyczących (na przykład kolizji).
  */
 public class Painter extends Panel implements ActionListener {
-	int score = 0;
+	Label scoreLabel = new Label("Score:");
 	Timer t = new Timer(5, this);
+	int score = 0;
 	int playerWidth = 50;
 	int playerHeight = 50;
 	int x0 = 475;
@@ -20,7 +21,6 @@ public class Painter extends Panel implements ActionListener {
 	int playerVel = 2;
 	int playerVelx = 0;
 	int playerVely = 0;
-	int counter = 0;
 	int radius = 100;
 	ArrayList<Ellipse2D> balls = new ArrayList<Ellipse2D>();
 	Rectangle2D player;
@@ -29,6 +29,7 @@ public class Painter extends Panel implements ActionListener {
 		setBackground(Color.gray);
 		setPreferredSize(new Dimension(1000, 500));
 
+		addSideMenu();
 		addEntities();
 		t.start();
 		MovementControl controller = new MovementControl(this);
@@ -43,6 +44,13 @@ public class Painter extends Panel implements ActionListener {
 		drawPlayer(g);
 		drawBalls(g);
 
+	}
+
+	public void addSideMenu(){
+		Container sideMenu = new Container();
+        sideMenu.setLayout(new BoxLayout(sideMenu, BoxLayout.Y_AXIS));
+		sideMenu.add(scoreLabel);
+		add(sideMenu);
 	}
 
 	public void addEntities() {
@@ -72,6 +80,7 @@ public class Painter extends Panel implements ActionListener {
 	public void actionPerformed(ActionEvent evt) {
 		repaint();
 		addEntities();
+		int collisionCounter = 0;
 		x0 += playerVelx;
 		y0 += playerVely;
 		for (int i = 0; i < FileParser.noOfBalls; i++) {
@@ -82,13 +91,31 @@ public class Painter extends Panel implements ActionListener {
 				FileParser.yVelocity[i] = -FileParser.yVelocity[i];
 			}
 			if (balls.get(i).intersects(player) == true) {
-				System.out.println("Collision detected!" + counter);
-				counter++;
+				collisionCounter++;
+				if (collisionCounter != 0)
+				{
+					FileParser.noOfLives = FileParser.noOfLives - 1;
+					if (FileParser.noOfLives < 0)
+					{
+						JOptionPane.showMessageDialog(this,"Game over! Your score: " + score);
+						
+					}
+					JOptionPane.showMessageDialog(this,"You lost a life! Lives remaining: " + FileParser.noOfLives);
+					resetPositions();
+				}
 			}
 			FileParser.xStart[i] += FileParser.xVelocity[i];
 			FileParser.yStart[i] += FileParser.yVelocity[i];
 		}
-
+		updateScore();
 	}
 
+	public void resetPositions() {
+		FileParser.levelParse(1);
+	}
+
+	public void updateScore() {
+		score++;
+		scoreLabel.setText("Score:  " + score + "  ");
+	}
 }

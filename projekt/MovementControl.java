@@ -3,6 +3,9 @@ package projekt;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/*
+*	Klasa odpowiadająca za poruszanie się bohaterem.
+*/
 public class MovementControl implements KeyListener {
     private Painter painter;
 

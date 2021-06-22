@@ -8,8 +8,8 @@ import javax.swing.*;
 /**
  * Klasa odpowiadająca za obsługę okna gry.
  */
-class Menu extends Frame {
-
+public class Menu extends Frame {
+    
     void displayMainMenu() {
 
         Button startGame = new Button("Start Game");
@@ -51,8 +51,6 @@ class Menu extends Frame {
         removeAll();
         repaint();
 
-        
-
         FileParser.configParse();
         FileParser.levelParse(1);
 
@@ -60,12 +58,8 @@ class Menu extends Frame {
 
         painter.setSize(1000, 500);
         add(painter);
-        JLabel scoreLabel = new JLabel("LOLOLOL");
-		GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.NONE;
-		c.gridx = 2;
-		c.gridy = 0;
-		add(scoreLabel, c);
+        
+       
         pack();
         setVisible(true);
         this.addWindowListener(new WindowAdapter() {
