@@ -7,19 +7,24 @@ import java.awt.event.KeyListener;
 *	Klasa odpowiadająca za poruszanie się bohaterem.
 */
 public class MovementControl implements KeyListener {
-    private Painter painter;
-
+    private Painter painter; /** Zawiera informacje na temat komponentu Painter */
 
     MovementControl(Painter painter){
         this.painter = painter;
     }
 
+	/**
+	 * Porusza graczem do góry.
+	 */
     public void up() {
 
 		painter.playerVelx = 0;
 		painter.playerVely = -painter.playerVel;
 	}
 
+	/**
+	 * Porusza graczem w dół.
+	 */
 	public void down() {
 
 		painter.playerVelx = 0;
@@ -27,25 +32,40 @@ public class MovementControl implements KeyListener {
 
 	}
 
+	/**
+	 * Porusza graczem w lewo.
+	 */
 	public void left() {
 		painter.playerVelx = -painter.playerVel;
 		painter.playerVely = 0;
 	}
 
+	/**
+	 * Porusza graczem w prawo.
+	 */
 	public void right() {
 		painter.playerVelx = painter.playerVel;
 		painter.playerVely = 0;
 	}
 
+	/**
+	 * Zatrzymuje gracza.
+	 */
 	public void stop() {
 		painter.playerVelx = 0;
 		painter.playerVely = 0;
 	}
 
+	/**
+	 * Pauzuje grę.
+	 */
 	public void pause() {
 		painter.pauseIndex = 1;
 		painter.pauseLabel.setText("PAUSED - PRESS SPACE TO UNPAUSE");
 	}
+	/**
+	 * Odpauzowuje grę.
+	 */
 	public void unpause() {
 		painter.pauseIndex = 0;
 		painter.pauseLabel.setText("RUNNING - PRESS SPACE TO PAUSE");

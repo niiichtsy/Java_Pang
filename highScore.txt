@@ -1,4 +1,6 @@
-Michał = 6000
-Daniel = 3400
-Jan = 2300
-Ktoś = 2000
+noOfPlayers=2
+Player1=Daniel
+Player2=Michal
+Score1=1500
+Score2=1000
+
