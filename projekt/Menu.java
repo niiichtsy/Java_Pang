@@ -13,7 +13,7 @@ public class Menu extends Frame {
     void displayMainMenu() {
 
         Button startGame = new Button("Start Game");
-        Button options = new Button("Options");
+        Button highScore = new Button("High Score");
         setLayout(new GridBagLayout());
         setSize(500, 500);
         setVisible(true);
@@ -26,7 +26,7 @@ public class Menu extends Frame {
         c.gridwidth = 1;
         c.gridx = 0;
         c.gridy = 0;
-        add(options, c);
+        add(highScore, c);
 
         startGame.addActionListener(event -> {
             try {

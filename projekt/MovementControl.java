@@ -42,6 +42,15 @@ public class MovementControl implements KeyListener {
 		painter.playerVely = 0;
 	}
 
+	public void pause() {
+		painter.pauseIndex = 1;
+		painter.pauseLabel.setText("PAUSED - PRESS SPACE TO UNPAUSE");
+	}
+	public void unpause() {
+		painter.pauseIndex = 0;
+		painter.pauseLabel.setText("RUNNING - PRESS SPACE TO PAUSE");
+	}
+
     @Override
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
@@ -74,6 +83,13 @@ public class MovementControl implements KeyListener {
 					stop();
 				}
 				break;
+			case (KeyEvent.VK_SPACE):
+				if (painter.pauseIndex == 0) {
+					pause();
+				} else {
+					unpause();
+				}
+				break;	
 		}
 
 	}

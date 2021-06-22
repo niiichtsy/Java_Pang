@@ -4,7 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+import java.io.File;
 import java.util.ArrayList;
+import java.io.IOException;
 
 /**
  * Klasa odpowiadająca za rysowanie obiektów oraz obsługę zdarzeń ich
@@ -12,7 +14,13 @@ import java.util.ArrayList;
  */
 public class Painter extends Panel implements ActionListener {
 	Label scoreLabel = new Label("Score:");
+	Label pauseLabel = new Label("RUNNING - PRESS SPACE TO PAUSE");
 	Timer t = new Timer(5, this);
+	int[] startingPosx = java.util.Arrays.copyOf(FileParser.xStart, FileParser.xStart.length);
+	int[] startingPosy = java.util.Arrays.copyOf(FileParser.yStart, FileParser.yStart.length);
+	int[] xVelocity = java.util.Arrays.copyOf(FileParser.xVelocity, FileParser.xVelocity.length);
+	int[] yVelocity = java.util.Arrays.copyOf(FileParser.yVelocity, FileParser.yVelocity.length);
+	int lives = FileParser.noOfLives;
 	int score = 0;
 	int playerWidth = 50;
 	int playerHeight = 50;
@@ -22,6 +30,7 @@ public class Painter extends Panel implements ActionListener {
 	int playerVelx = 0;
 	int playerVely = 0;
 	int radius = 100;
+	int pauseIndex = 0;
 	ArrayList<Ellipse2D> balls = new ArrayList<Ellipse2D>();
 	Rectangle2D player;
 
@@ -29,7 +38,7 @@ public class Painter extends Panel implements ActionListener {
 		setBackground(Color.gray);
 		setPreferredSize(new Dimension(1000, 500));
 
-		addSideMenu();
+		addTopMenu();
 		addEntities();
 		t.start();
 		MovementControl controller = new MovementControl(this);
@@ -46,17 +55,18 @@ public class Painter extends Panel implements ActionListener {
 
 	}
 
-	public void addSideMenu(){
-		Container sideMenu = new Container();
-        sideMenu.setLayout(new BoxLayout(sideMenu, BoxLayout.Y_AXIS));
-		sideMenu.add(scoreLabel);
-		add(sideMenu);
+	public void addTopMenu() {
+		Container topMenu = new Container();
+		topMenu.setLayout(new BoxLayout(topMenu, BoxLayout.Y_AXIS));
+		topMenu.add(scoreLabel);
+		topMenu.add(pauseLabel);
+		add(topMenu);
 	}
 
 	public void addEntities() {
 		balls.clear();
 		for (int i = 0; i < FileParser.noOfBalls; i++) {
-			balls.add(new Ellipse2D.Double(FileParser.xStart[i], FileParser.yStart[i], radius, radius));
+			balls.add(new Ellipse2D.Double(startingPosx[i], startingPosy[i], radius, radius));
 		}
 		player = new Rectangle2D.Double(x0, y0, playerWidth, playerHeight);
 	}
@@ -80,38 +90,42 @@ public class Painter extends Panel implements ActionListener {
 	public void actionPerformed(ActionEvent evt) {
 		repaint();
 		addEntities();
-		int collisionCounter = 0;
+		
+		if (pauseIndex !=1)
+		{
 		x0 += playerVelx;
 		y0 += playerVely;
 		for (int i = 0; i < FileParser.noOfBalls; i++) {
-			if (FileParser.xStart[i] < 0 || FileParser.xStart[i] > getWidth() - radius - 1) {
-				FileParser.xVelocity[i] = -FileParser.xVelocity[i];
+			if (startingPosx[i] < 0 || startingPosx[i] > getWidth() - radius - 1) {
+				xVelocity[i] = -xVelocity[i];
 			}
-			if (FileParser.yStart[i] < 0 || FileParser.yStart[i] > getHeight() - radius - 1) {
-				FileParser.yVelocity[i] = -FileParser.yVelocity[i];
+			if (startingPosy[i] < 0 || startingPosy[i] > getHeight() - radius - 1) {
+				yVelocity[i] = -yVelocity[i];
 			}
 			if (balls.get(i).intersects(player) == true) {
-				collisionCounter++;
-				if (collisionCounter != 0)
-				{
-					FileParser.noOfLives = FileParser.noOfLives - 1;
-					if (FileParser.noOfLives < 0)
-					{
-						JOptionPane.showMessageDialog(this,"Game over! Your score: " + score);
-						
-					}
-					JOptionPane.showMessageDialog(this,"You lost a life! Lives remaining: " + FileParser.noOfLives);
+				lives--;
+				if (FileParser.noOfLives < 0) {
+
+					JOptionPane.showMessageDialog(this, "Game over! Your score: " + score);
 					resetPositions();
 				}
+				JOptionPane.showMessageDialog(this, "You lost a life! Lives remaining: " + lives);
+				resetPositions();
 			}
-			FileParser.xStart[i] += FileParser.xVelocity[i];
-			FileParser.yStart[i] += FileParser.yVelocity[i];
+
+			startingPosx[i] += xVelocity[i];
+			startingPosy[i] += yVelocity[i];
 		}
-		updateScore();
+	    updateScore();
+	}
+		
 	}
 
 	public void resetPositions() {
-		FileParser.levelParse(1);
+	 	startingPosx = java.util.Arrays.copyOf(FileParser.xStart, FileParser.xStart.length);
+		startingPosy = java.util.Arrays.copyOf(FileParser.yStart, FileParser.yStart.length);
+		playerVelx = 0;
+		playerVely = 0;
 	}
 
 	public void updateScore() {
