@@ -18,20 +18,15 @@ class Menu extends Frame {
         setSize(500, 500);
         setVisible(true);
 
-        
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 0.0;
-        c.gridwidth = 3;
-	    c.gridx = 1;
-	    c.gridy = 1;
+        c.gridx = 0;
+        c.gridy = 1;
         add(startGame, c);
-	    c.gridwidth = 1;
-	    c.gridx = 3;
-	    c.gridy = 0;
+        c.gridwidth = 1;
+        c.gridx = 0;
+        c.gridy = 0;
         add(options, c);
-
-        
 
         startGame.addActionListener(event -> {
             try {
@@ -52,16 +47,11 @@ class Menu extends Frame {
     }
 
     void displayGame() throws IOException {
-    
+
         removeAll();
         repaint();
 
-        JLabel scoreLabel = new JLabel("Score:");
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.NONE;
-	    c.gridx = 2;
-	    c.gridy = 0;
-        add(scoreLabel, c);
+        
 
         FileParser.configParse();
         FileParser.levelParse(1);
@@ -70,7 +60,12 @@ class Menu extends Frame {
 
         painter.setSize(1000, 500);
         add(painter);
-
+        JLabel scoreLabel = new JLabel("LOLOLOL");
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.NONE;
+		c.gridx = 2;
+		c.gridy = 0;
+		add(scoreLabel, c);
         pack();
         setVisible(true);
         this.addWindowListener(new WindowAdapter() {
