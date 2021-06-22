@@ -13,6 +13,7 @@ import java.io.IOException;
  * dotyczących (na przykład kolizji).
  */
 public class Painter extends JPanel implements ActionListener {
+	Frame parentFrame;
 	Label scoreLabel = new Label("Score:");
 	Label pauseLabel = new Label("PAUSED - PRESS SPACE TO UNPAUSE");
 	Timer t = new Timer(5, this);
@@ -21,7 +22,8 @@ public class Painter extends JPanel implements ActionListener {
 	int[] xVelocity = java.util.Arrays.copyOf(FileParser.xVelocity, FileParser.xVelocity.length);
 	int[] yVelocity = java.util.Arrays.copyOf(FileParser.yVelocity, FileParser.yVelocity.length);
 	int lives = FileParser.noOfLives;
-	static int score = 0;
+	int score = 0;
+	int currentLevel;
 	int playerWidth = 50;
 	int playerHeight = 50;
 	int x0 = 475;
@@ -34,7 +36,9 @@ public class Painter extends JPanel implements ActionListener {
 	ArrayList<Ellipse2D> balls = new ArrayList<Ellipse2D>();
 	Rectangle2D player;
 
-	public Painter() {
+	public Painter(Frame parentFrame, int levelIndex) {
+		this.parentFrame = parentFrame;
+		this.currentLevel = levelIndex;
 		setPreferredSize(new Dimension(1000, 500));
 
 		addTopMenu();
@@ -44,23 +48,40 @@ public class Painter extends JPanel implements ActionListener {
 		addKeyListener(controller);
 		setFocusable(true);
 		setFocusTraversalKeysEnabled(false);
-		
+
 	}
 
 	public void paintComponent(Graphics g) {
-		if (score < 500) 
-		{
-		super.paintComponent(g);
-		g.clearRect(0, 0, getWidth(), getHeight());
-		drawPlayer(g);
-		drawBalls(g);
-		}
-		else
-		{
+		if (score < 500) {
+			super.paintComponent(g);
+			g.clearRect(0, 0, getWidth(), getHeight());
+			drawPlayer(g);
+			drawBalls(g);
+		} else
+			try {
+				runNextLevel();
+			}
+
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+	}
+
+	public void runNextLevel() throws IOException {
+		try {
 			pauseIndex = 1;
-			JOptionPane.showMessageDialog(this, "Level cleared!"); 
-			
-		}	
+			JOptionPane.showMessageDialog(this, "Level cleared!");
+			parentFrame.dispose();
+			Menu.finalScore = Menu.finalScore + score;
+			score = 0;
+			if (FileParser.noOfLevels > currentLevel)
+				Menu.displayGame(currentLevel + 1);
+			else
+				Menu.displayEndMenu();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public void addTopMenu() {
@@ -76,7 +97,7 @@ public class Painter extends JPanel implements ActionListener {
 		for (int i = 0; i < FileParser.noOfBalls; i++) {
 			balls.add(new Ellipse2D.Double(startingPosx[i], startingPosy[i], radius, radius));
 		}
-		
+
 		player = new Rectangle2D.Double(x0, y0, playerWidth, playerHeight);
 	}
 
@@ -97,53 +118,54 @@ public class Painter extends JPanel implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent evt) {
-		if (pauseIndex !=1)
-		{
-		repaint();
-		addEntities();
-		x0 += playerVelx;
-		y0 += playerVely;
-		for (int i = 0; i < FileParser.noOfBalls; i++) {
-			if (startingPosx[i] < 0 || startingPosx[i] > getWidth() - radius - 1) {
-				xVelocity[i] = -xVelocity[i];
-			}
-			if (startingPosy[i] < 0 || startingPosy[i] > getHeight() - radius - 1) {
-				yVelocity[i] = -yVelocity[i];
-			}
-			if (balls.get(i).intersects(player) == true) {
-				lives--;
-				if (FileParser.noOfLives < 0) {
-
-					JOptionPane.showMessageDialog(this, "Game over! Your score: " + score);
-					resetPositions();
+		if (pauseIndex != 1) {
+			repaint();
+			addEntities();
+			x0 += playerVelx;
+			y0 += playerVely;
+			for (int i = 0; i < FileParser.noOfBalls; i++) {
+				if (startingPosx[i] < 0 || startingPosx[i] > getWidth() - radius - 1) {
+					xVelocity[i] = -xVelocity[i];
 				}
-				JOptionPane.showMessageDialog(this, "You lost a life! Lives remaining: " + lives);
-				resetPositions();
-			}
+				if (startingPosy[i] < 0 || startingPosy[i] > getHeight() - radius - 1) {
+					yVelocity[i] = -yVelocity[i];
+				}
+				if (balls.get(i).intersects(player) == true) {
+					lives--;
+					if (lives == -1) {
 
-			startingPosx[i] += xVelocity[i];
-			startingPosy[i] += yVelocity[i];
+						JOptionPane.showMessageDialog(this, "Game over! Your score: " + score);
+						resetPositions();
+						Menu.displayMainMenu();
+						pauseIndex = 1;
+						parentFrame.dispose();
+					}
+					else {
+						JOptionPane.showMessageDialog(this, "You lost a life! Lives remaining: " + lives);
+					resetPositions();
+					score = 0;
+					} 
+				}
+
+				startingPosx[i] += xVelocity[i];
+				startingPosy[i] += yVelocity[i];
+			}
+			updateScore();
 		}
-	    updateScore();
-	}
-		
+
 	}
 
 	public void resetPositions() {
-	 	startingPosx = java.util.Arrays.copyOf(FileParser.xStart, FileParser.xStart.length);
+		startingPosx = java.util.Arrays.copyOf(FileParser.xStart, FileParser.xStart.length);
 		startingPosy = java.util.Arrays.copyOf(FileParser.yStart, FileParser.yStart.length);
 		playerVelx = 0;
 		playerVely = 0;
 		x0 = 475;
-		y0 = 450; 
+		y0 = 450;
 	}
 
 	public void updateScore() {
 		score++;
 		scoreLabel.setText("Score:  " + score + "  ");
-	}
-
-	static int getScore() {
-		return score;
 	}
 }

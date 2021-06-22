@@ -32,7 +32,7 @@ public class FileParser {
     propertiesFile.close();
   }
 
-  static void levelParse(int levelNumber) throws IOException {
+  static void levelParse(int levelNumber) throws IOException  {
     InputStream propertiesFile = new FileInputStream(levelNumber + "level.txt");
     Properties properties = new Properties();
     properties.load(propertiesFile);

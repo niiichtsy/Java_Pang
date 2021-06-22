@@ -1,0 +1,13 @@
+noOfBalls=3
+xVelocity1=4
+yVelocity1=2
+xVelocity2=5
+yVelocity2=1
+xVelocity3=1
+yVelocity3=7
+xStart1=1
+yStart1=1
+xStart2=300
+yStart2=20
+xStart3=500
+yStart3=100
