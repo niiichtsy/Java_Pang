@@ -1,6 +1,7 @@
-noOfPlayers=2
+noOfPlayers=3
 Player1=Daniel
-Player2=Michal
+Player2=Gracz
+Player3=Michal
 Score1=1500
-Score2=1000
-
+Score2=1500
+Score3=1000

@@ -1,0 +1,1 @@
+javadoc -d dokumentacja projekt/*.java -private

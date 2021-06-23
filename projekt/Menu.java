@@ -3,7 +3,6 @@ package projekt;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-import javax.swing.*;
 
 /**
  * Klasa odpowiadająca za obsługę okna gry.
