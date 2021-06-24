@@ -13,17 +13,31 @@ import java.io.PrintStream;
  * "(numerpoziomu)level.txt", natomiast konfiguracja gry w pliku config.
  */
 public class FileParser {
-  static int noOfBalls; /** Zmienna określająca liczbę piłek */  
-  static int noOfLevels; /** zmienna określająca liczbę poziomów  */
-  static int noOfLives; /** Zmienna określająca liczbę żyć*/ 
-  static int noOfPlayers; /** Zmienna określająca liczbę graczy */ 
-  static int[] yVelocity; /** Tablica z prędkościami wertykalnymi piłek*/ 
-  static int[] xVelocity; /** Tablica z prędkościami horyzontalnymi piłek */ 
-  static int[] xStart; /** Tablica z pozycjami startowymi x  piłek  */ 
-  static int[] yStart; /** Tablica z pozycjami startowymi y  piłek */ 
-  static String[] players; /** Tablica z imionami graczy */
-  static int[] scores; /** Tablica z wynikami graczy */
-  static String playerName; /** Zmienna przechowująca imię obecnego gracza */
+  /** Zmienna określająca wymagane punkty, aby ukończyć poziom */
+  static int scoreReq;
+  /** Zmienna określająca liczbę piłek */
+  static int noOfBalls;
+  /** zmienna określająca liczbę poziomów */
+  static int noOfLevels;
+  /** Zmienna określająca liczbę żyć */
+  static int noOfLives;
+  /** Zmienna określająca liczbę graczy */
+  static int noOfPlayers;
+  /** Tablica z prędkościami wertykalnymi piłek */
+  static int[] yVelocity;
+  /** Tablica z prędkościami horyzontalnymi piłek */
+  static int[] xVelocity;
+  /** Tablica z pozycjami startowymi x piłek */
+  static int[] xStart;
+  /** Tablica z pozycjami startowymi y piłek */
+  static int[] yStart;
+  /** Tablica z imionami graczy */
+  static String[] players;
+  /** Tablica z wynikami graczy */
+  static int[] scores;
+  /** Zmienna przechowująca imię obecnego gracza */
+  static String playerName;
+
   /**
    * Metoda parsująca plik konfiguracyjny.
    */
@@ -40,10 +54,11 @@ public class FileParser {
   /**
    * Metoda parsująca poziom.
    */
-  static void levelParse(int levelNumber) throws IOException  {
+  static void levelParse(int levelNumber) throws IOException {
     InputStream propertiesFile = new FileInputStream(levelNumber + "level.txt");
     Properties properties = new Properties();
     properties.load(propertiesFile);
+    scoreReq = Integer.parseInt(properties.getProperty("scoreReq"));
     noOfBalls = Integer.parseInt(properties.getProperty("noOfBalls"));
     xVelocity = new int[noOfBalls];
     yVelocity = new int[noOfBalls];
@@ -61,42 +76,31 @@ public class FileParser {
   }
 
   /**
-   * Metoda zapisująca wynik do pliku, po posortowaniu go w kolejności najwyższych do najniższych.
+   * Metoda zapisująca wynik do pliku, po posortowaniu go w kolejności najwyższych
+   * do najniższych.
    */
   static void scoreSave(int finalScore, String playerName) throws IOException {
     scoreLoad();
     FileOutputStream outFile = new FileOutputStream("highScore.txt");
     PrintStream out = new PrintStream(outFile);
     noOfPlayers++;
-    scores[noOfPlayers-1] = finalScore;
-    players[noOfPlayers-1] = playerName;
-    out.println("noOfPlayers="+(noOfPlayers));
+    scores[noOfPlayers - 1] = finalScore;
+    players[noOfPlayers - 1] = playerName;
+    out.println("noOfPlayers=" + (noOfPlayers));
+   
+    sort(scores, players);
 
-    for (int i = 0; i < (noOfPlayers); i++)
-    {
-      if (scores[i] < scores[i+1]) 
-      {
-        int tempint = scores[i];
-        scores[i] = scores[i+1];
-        scores[i+1] = tempint;
-        String tempstring = players[i];
-        players[i] = players[i+1];
-        players[i+1] = tempstring;
-      }
+
+    for (int i = 0; i < (noOfPlayers); i++) {
+      out.println("Player" + (i + 1) + "=" + players[i]);
+
     }
-    for (int i = 0; i < (noOfPlayers); i++)
-    {
-      out.println("Player"+(i+1)+"="+players[i]);
-      
+    for (int i = 0; i < (noOfPlayers); i++) {
+      out.println("Score" + (i + 1) + "=" + scores[i]);
     }
-    for (int i = 0; i < (noOfPlayers); i++)
-    {
-      out.println("Score"+(i+1)+"="+scores[i]);
-    }
-    
+    out.close();
   }
 
-  
   /**
    * Metoda wczytująca wyniki z pliku.
    */
@@ -105,26 +109,31 @@ public class FileParser {
     Properties properties = new Properties();
     properties.load(propertiesFile);
     noOfPlayers = Integer.parseInt(properties.getProperty("noOfPlayers"));
-    scores = new int[noOfPlayers+2];
-    players = new String[noOfPlayers+2];
-    for (int i = 0; i< noOfPlayers; i++)
-    {
+    scores = new int[noOfPlayers + 2];
+    players = new String[noOfPlayers + 2];
+    for (int i = 0; i < noOfPlayers; i++) {
       scores[i] = Integer.parseInt(properties.getProperty("Score" + (i + 1)));
       players[i] = properties.getProperty("Player" + (i + 1));
     }
-    for (int i = 0; i < (noOfPlayers); i++)
-    {
-      if (scores[i] < scores[i+1]) 
-      {
-        int tempint = scores[i];
-        scores[i] = scores[i+1];
-        scores[i+1] = tempint;
-        String tempstring = players[i];
-        players[i] = players[i+1];
-        players[i+1] = tempstring;
-      }
-    }
+    sort(scores, players);
   }
 
+  static void sort(int[] arr, String[] s)
+{
+  int temp = 0;
+  String tempstring;
+  for (int i = 0; i < arr.length; i++) {   
+    for (int j = i+1; j < arr.length; j++) {   
+       if(arr[i] < arr[j]) {  
+           temp = arr[i];  
+           arr[i] = arr[j];  
+           arr[j] = temp;  
+           tempstring = s[i];
+           s[i] = s[j];
+           s[j] = tempstring;
+       }   
+    }   
+}  
+}
 
 }

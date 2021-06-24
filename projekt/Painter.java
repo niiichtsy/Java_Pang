@@ -12,28 +12,50 @@ import java.io.IOException;
  * dotyczących (na przykład kolizji).
  */
 public class Painter extends JPanel implements ActionListener {
-	Frame parentFrame; /** Przechowuje informacje na temat okna głównego, z którego została wywołana */
-	Label scoreLabel = new Label("Score:"); /** Napis z wynikiem */
-	Label pauseLabel = new Label("PAUSED - PRESS SPACE TO UNPAUSE"); /** Napis ze stanem gry */
-	Timer t = new Timer(5, this); /** Główny timer do animacji i obsługi zdarzeń */
-	int[] startingPosx = java.util.Arrays.copyOf(FileParser.xStart, FileParser.xStart.length); /** Kopia tablicy pozycji startowych x piłek */
-	int[] startingPosy = java.util.Arrays.copyOf(FileParser.yStart, FileParser.yStart.length);	/** Kopia tablicy pozycji startowych y piłek */
-	int[] xVelocity = java.util.Arrays.copyOf(FileParser.xVelocity, FileParser.xVelocity.length); /** Kopia tablicy prędkości horyzontalnych piłek */
-	int[] yVelocity = java.util.Arrays.copyOf(FileParser.yVelocity, FileParser.yVelocity.length); /** Kopia tablicy prędkości wertykalnych */
-	int lives = FileParser.noOfLives; /** Obecna liczba żyć gracza */
-	int score = 0; /** Bieżący wynik gracza */
-	int currentLevel; /** Bieżący poziom */
-	int playerWidth = 50; /** Szerokość gracz */
-	int playerHeight = 50; /** Wysokość gracza */
-	int x0 = 475; /** Pozycja startowa x gracza */
-	int y0 = 450; /** Pozycja startowa y gracza */
-	int playerVel = 2; /** Prędkość gracza */
-	int playerVelx = 0; /** Chwilowa prędkość horyzontalna gracza */
-	int playerVely = 0; /** Chwilowa prękość wertykalna gracza */
-	int radius = 100; /** Promień rysowanych piłek */
-	int pauseIndex = 1; /** Zmienna określająca, czy gra jest spauzowana, czy nie */
-	ArrayList<Ellipse2D> balls = new ArrayList<Ellipse2D>(); /** Tablica istniejących w danym momencie piłek */
-	Rectangle2D player; /** Model gracza */
+	/** Przechowuje informacje na temat okna głównego, z którego została wywołana */
+	Frame parentFrame;
+	/** Napis z wynikiem */
+	Label scoreLabel = new Label("Score:");
+	/** Napis ze stanem gry */
+	Label pauseLabel = new Label("PAUSED - PRESS SPACE TO UNPAUSE");
+	/** Główny timer do animacji i obsługi zdarzeń */
+	Timer t = new Timer(5, this);
+	/** Kopia tablicy pozycji startowych x piłek */
+	int[] startingPosx = java.util.Arrays.copyOf(FileParser.xStart, FileParser.xStart.length);
+	/** Kopia tablicy pozycji startowych y piłek */
+	int[] startingPosy = java.util.Arrays.copyOf(FileParser.yStart, FileParser.yStart.length);
+	/** Kopia tablicy prędkości horyzontalnych piłek */
+	int[] xVelocity = java.util.Arrays.copyOf(FileParser.xVelocity, FileParser.xVelocity.length);
+	/** Kopia tablicy prędkości wertykalnych */
+	int[] yVelocity = java.util.Arrays.copyOf(FileParser.yVelocity, FileParser.yVelocity.length);
+	/** Obecna liczba żyć gracza */
+	int lives = FileParser.noOfLives;
+	/** Bieżący wynik gracza */
+	int score = 0;
+	/** Bieżący poziom */
+	int currentLevel;
+	/** Szerokość gracz */
+	int playerWidth = 50;
+	/** Wysokość gracza */
+	int playerHeight = 50;
+	/** Pozycja startowa x gracza */
+	int x0 = 475;
+	/** Pozycja startowa y gracza */
+	int y0 = 450;
+	/** Prędkość gracza */
+	int playerVel = 2;
+	/** Chwilowa prędkość horyzontalna gracza */
+	int playerVelx = 0;
+	/** Chwilowa prękość wertykalna gracza */
+	int playerVely = 0;
+	/** Promień rysowanych piłek */
+	int radius = 100;
+	/** Zmienna określająca, czy gra jest spauzowana, czy nie */
+	int pauseIndex = 1;
+	/** Tablica istniejących w danym momencie piłek */
+	ArrayList<Ellipse2D> balls = new ArrayList<Ellipse2D>();
+	/** Model gracza */
+	Rectangle2D player;
 
 	public Painter(Frame parentFrame, int levelIndex) {
 		this.parentFrame = parentFrame;
@@ -50,25 +72,17 @@ public class Painter extends JPanel implements ActionListener {
 
 	}
 
-	
 	public void paintComponent(Graphics g) {
-		if (score < 500) {
-			super.paintComponent(g);
-			g.clearRect(0, 0, getWidth(), getHeight());
-			drawPlayer(g);
-			drawBalls(g);
-		} else
-			try {
-				runNextLevel();
-			}
 
-			catch (IOException e) {
-				e.printStackTrace();
-			}
+		super.paintComponent(g);
+		g.clearRect(0, 0, getWidth(), getHeight());
+		drawPlayer(g);
+		drawBalls(g);
+
 	}
 
 	/**
-	 *  Metoda decydująca, czy załadować następny poziom, czy pokazać menu końcowe.
+	 * Metoda decydująca, czy załadować następny poziom, czy pokazać menu końcowe.
 	 */
 	public void runNextLevel() throws IOException {
 		try {
@@ -81,14 +95,15 @@ public class Painter extends JPanel implements ActionListener {
 				Menu.displayGame(currentLevel + 1);
 			else
 				Menu.displayEndMenu();
-				
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 	}
+
 	/**
-	 *  Metoda dodająca komponent pokazujący wynik oraz stan gry.
+	 * Metoda dodająca komponent pokazujący wynik oraz stan gry.
 	 */
 	public void addTopMenu() {
 		Container topMenu = new Container();
@@ -110,7 +125,7 @@ public class Painter extends JPanel implements ActionListener {
 		player = new Rectangle2D.Double(x0, y0, playerWidth, playerHeight);
 	}
 
-	/** 
+	/**
 	 * Metoda rysująca gracza.
 	 */
 	public void drawPlayer(Graphics g) {
@@ -131,51 +146,61 @@ public class Painter extends JPanel implements ActionListener {
 		}
 
 	}
+
 	/**
-	 * Główny watek zdarzeń wykonywany przez timer. Sprawdza stan gry, kolizję piłek z graczem, odświeża wynik, zmienia pozycje piłek oraz gracza na podstawie kontrolera ruchu,
-	 *  decyduje o ujęciu punktu życia oraz wyświetleniu menu w przypadku braku żyć.
+	 * Główny watek zdarzeń wykonywany przez timer. Sprawdza stan gry, kolizję piłek
+	 * z graczem, odświeża wynik, zmienia pozycje piłek oraz gracza na podstawie
+	 * kontrolera ruchu, decyduje o ujęciu punktu życia oraz wyświetleniu menu w
+	 * przypadku braku żyć.
 	 */
 	public void actionPerformed(ActionEvent evt) {
-		if (pauseIndex != 1) {
-			repaint();
-			addEntities();
-			x0 += playerVelx;
-			y0 += playerVely;
-			for (int i = 0; i < FileParser.noOfBalls; i++) {
-				if (startingPosx[i] < 0 || startingPosx[i] > getWidth() - radius - 1) {
-					xVelocity[i] = -xVelocity[i];
-				}
-				if (startingPosy[i] < 0 || startingPosy[i] > getHeight() - radius - 1) {
-					yVelocity[i] = -yVelocity[i];
-				}
-				if (balls.get(i).intersects(player) == true) {
-					lives--;
-					if (lives == -1) {
+		if (score < FileParser.scoreReq) {
+			if (pauseIndex != 1) {
+				repaint();
+				addEntities();
+				x0 += playerVelx;
+				y0 += playerVely;
+				for (int i = 0; i < FileParser.noOfBalls; i++) {
+					if (startingPosx[i] < 0 || startingPosx[i] > getWidth() - radius - 1) {
+						xVelocity[i] = -xVelocity[i];
+					}
+					if (startingPosy[i] < 0 || startingPosy[i] > getHeight() - radius - 1) {
+						yVelocity[i] = -yVelocity[i];
+					}
+					if (balls.get(i).intersects(player) == true) {
+						lives--;
+						if (lives == -1) {
 
-						JOptionPane.showMessageDialog(this, "Game over! Your score: " + (Menu.finalScore + score));
-						resetPositions();
-						Menu.displayMainMenu();
-						pauseIndex = 1;
-						parentFrame.dispose();
-						try{
-						FileParser.scoreSave((Menu.finalScore + score), FileParser.playerName);
-						} 
-						catch (IOException e) {
-							e.printStackTrace();
+							JOptionPane.showMessageDialog(this, "Game over! Your score: " + (Menu.finalScore + score));
+							resetPositions();
+							Menu.displayMainMenu();
+							pauseIndex = 1;
+							parentFrame.dispose();
+							try {
+								FileParser.scoreSave((Menu.finalScore + score), FileParser.playerName);
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						} else {
+							JOptionPane.showMessageDialog(this, "You lost a life! Lives remaining: " + lives);
+							resetPositions();
+							score = 0;
 						}
 					}
-					else {
-						JOptionPane.showMessageDialog(this, "You lost a life! Lives remaining: " + lives);
-					resetPositions();
-					score = 0;
-					} 
-				}
 
-				startingPosx[i] += xVelocity[i];
-				startingPosy[i] += yVelocity[i];
+					startingPosx[i] += xVelocity[i];
+					startingPosy[i] += yVelocity[i];
+				}
+				updateScore();
 			}
-			updateScore();
-		}
+		} else
+			try {
+				runNextLevel();
+			}
+
+			catch (IOException e) {
+				e.printStackTrace();
+			}
 
 	}
 

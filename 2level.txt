@@ -1,3 +1,4 @@
+scoreReq=1000
 noOfBalls=2
 xVelocity1=1
 xVelocity2=2

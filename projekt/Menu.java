@@ -8,14 +8,16 @@ import java.io.IOException;
  * Klasa odpowiadająca za obsługę okna gry.
  */
 public class Menu extends Frame {
+    /** Zmienna przechowująca ostateczny wynik po skończeniu gry. */
+    static int finalScore = 0;
 
-    static int finalScore = 0; /** Zmienna przechowująca ostateczny wynik po skończeniu gry. */
     
+
     /**
      * Metoda wyświetlająca główne menu.
      */
     static void displayMainMenu() {
-      
+
         Frame frame = new Frame();
         Button startGame = new Button("Start Game");
         Button highScore = new Button("High Score");
@@ -43,9 +45,9 @@ public class Menu extends Frame {
         });
 
         highScore.addActionListener(event -> {
-                frame.dispose();
-                displayHighScore();
-        
+            frame.dispose();
+            displayHighScore();
+
         });
 
         frame.addWindowListener(new WindowAdapter() {
@@ -56,6 +58,7 @@ public class Menu extends Frame {
         });
 
     }
+
     /**
      * Metoda wyświetlająca menu gry.
      */
@@ -71,13 +74,12 @@ public class Menu extends Frame {
         Painter painter = new Painter(frame, levelIndex);
 
         painter.setSize(1000, 500);
-       
+
         frame.add(painter);
         frame.pack();
         frame.setVisible(true);
         frame.setResizable(true);
-       
-        
+
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
                 frame.dispose();
@@ -85,6 +87,7 @@ public class Menu extends Frame {
             }
         });
     }
+
     /**
      * Metoda wyświetlająca menu końcowe.
      */
@@ -108,25 +111,24 @@ public class Menu extends Frame {
         frame.add(mainMenu, c);
         c.gridx = 0;
         c.gridy = 2;
-        frame.add(exit,c);
+        frame.add(exit, c);
 
         mainMenu.addActionListener(event -> {
             try {
-                FileParser.scoreSave(Menu.finalScore, FileParser.playerName); 
+                FileParser.scoreSave(Menu.finalScore, FileParser.playerName);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-                frame.dispose();
-                displayMainMenu();
-           
+            frame.dispose();
+            displayMainMenu();
+
         });
 
         exit.addActionListener(event -> {
-            
-                
-                frame.dispose();
-                System.exit(0);
-            
+
+            frame.dispose();
+            System.exit(0);
+
         });
 
         frame.addWindowListener(new WindowAdapter() {
@@ -137,6 +139,7 @@ public class Menu extends Frame {
         });
 
     }
+
     static void displayHighScore() {
         Frame frame = new Frame();
         frame.setSize(300, 300);
@@ -163,17 +166,17 @@ public class Menu extends Frame {
         frame.add(score2, c);
         c.gridx = 0;
         c.gridy = 2;
-        frame.add(score3,c);
+        frame.add(score3, c);
         c.gridx = 2;
         c.gridy = 2;
-        frame.add(mainMenu,c);
+        frame.add(mainMenu, c);
 
         mainMenu.addActionListener(event -> {
-          
+
             frame.dispose();
             displayMainMenu();
-       
-    });
+
+        });
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
                 frame.dispose();

@@ -1,3 +1,4 @@
+scoreReq=1500
 noOfBalls=3
 xVelocity1=4
 yVelocity1=2
