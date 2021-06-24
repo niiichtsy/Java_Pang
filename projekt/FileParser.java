@@ -87,10 +87,7 @@ public class FileParser {
     scores[noOfPlayers - 1] = finalScore;
     players[noOfPlayers - 1] = playerName;
     out.println("noOfPlayers=" + (noOfPlayers));
-   
-    sort(scores, players);
-
-
+    
     for (int i = 0; i < (noOfPlayers); i++) {
       out.println("Player" + (i + 1) + "=" + players[i]);
 

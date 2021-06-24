@@ -153,9 +153,9 @@ public class Menu extends Frame {
             e.printStackTrace();
         }
         Button mainMenu = new Button("Main Menu");
-        Label score1 = new Label(FileParser.players[0] + FileParser.scores[0]);
-        Label score2 = new Label(FileParser.players[1] + FileParser.scores[1]);
-        Label score3 = new Label(FileParser.players[2] + FileParser.scores[2]);
+        Label score1 = new Label("1." + FileParser.players[0] + " " + FileParser.scores[0]);
+        Label score2 = new Label("2." + FileParser.players[1] + " " + FileParser.scores[1]);
+        Label score3 = new Label("3." + FileParser.players[2] + " " + FileParser.scores[2]);
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
